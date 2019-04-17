@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+    jQuery(document).ready(function($){'use strict';
+        window.loopcounter = function( idWarp ) {
+            if(typeof idWarp!= 'undefined'){
+                var date = location.search.replace('+', ' ').replace('?', '');
+                if (date == "") date = "2020-01-01 3:00:00";
+
+                var start = new Date( date ),
+                    end   = new Date(),
+                    diff  = new Date( start - end ),
+                    time  = diff/1000/60/60/24;
+
+                    var day = parseInt(time);
+                    var hour = parseInt( 24 - (diff/1000/60/60)%24 );
+                    var min = parseInt( 60 - (diff/1000/60)%60 );
+                    var sec = parseInt( 60 - (diff/1000)%60 );
+                    
+                    counterDate(idWarp,day,hour,min,sec);
+
+                    var interval = setInterval(function () {
+                        if( sec==0 && min!=0 ){
+                            min--;
+                            sec = 60;
+                        }
+                        if(min == 0 && sec == 0 && hour!=0 ){
+                            hour--;
+                            min = 59;
+                            sec = 60;
+                        }
+                        if(min == 0 && sec == 0 && hour == 0 && day!=0 ){
+                            day--;
+                            hour = 23;
+                            min = 59;
+                            sec = 60;
+                        }
+                        if(min == 0 && sec == 0 && hour == 0 && day==0 ){
+                            clearInterval(interval);
+                        }else{
+                            sec--;
+                        }
+                        counterDate(idWarp,day,hour,min,sec);
+                    }, 1000 );
+
+                function counterDate(id,day,hour,min,sec){
+                    if (time < 0) { day = hour = min = sec = 0; }
+                    $( '.'+id+' .counter-days').html( counterDoubleDigit(day) );
+                    $( '.'+id+' .counter-hours').html( counterDoubleDigit(hour) );
+                    $( '.'+id+' .counter-minutes').html( counterDoubleDigit(min) );
+                    $( '.'+id+' .counter-seconds').html( counterDoubleDigit(sec) );
+                }
+                function counterDoubleDigit( arg ){
+                    if( arg.toString().length <= 1 ){
+                        arg = ('0' + arg).slice(-2);
+                    }
+                    return arg;
+                }
+            }
+        }
+        loopcounter( 'counter-class' );
+    });
+
+    </script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:700" rel="stylesheet"> 
+    
+    <style>
+    
+    body {
+        background: transparent;
+        overflow: hidden;
+    }
+
+    #countdown-timer {
+        font-family: 'Roboto';
+        font-weight: 700;
+        margin: 0 -30px;
+        text-align: center;
+        display: inline-block;
+    }
+    #countdown-timer >.countdown-section {
+        display: block;
+        float: left;
+        font-size: 62px;
+        line-height: 1;
+        color: #fff;
+        letter-spacing: 3px;
+        margin: 0 30px;
+    }
+    #countdown-timer >span.timer-day {
+        color: #fff200;
+    }
+    #countdown-timer >span.timer-hour {
+        color: #ff8a00;
+    }
+    #countdown-timer >span.timer-minute {
+        color: #00b9ff;
+    }
+    #countdown-timer >span.timer-second {
+        color: #8dc63f;
+    }
+    #countdown-timer >.countdown-section >.countdown-period {
+        display: block;
+        font-size: 20px;
+        margin-top: 8px;
+        line-height: 1;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #fff;
+    }
+
+    #countdown-timer:before,
+    #countdown-timer:after {
+        content: " ";
+        display: table;
+    }
+
+    #countdown-timer:after {
+        clear: both;
+    }
+
+    .countdown-timer-title {
+        line-height: 1;
+        text-transform: uppercase;
+    }
+
+    .countdown-days{
+        color:#fff200 !important;
+    }
+    .countdown-hours{
+        color:#ff8a00 !important;
+    }
+    .countdown-minutes{
+        color:#00b9ff !important;
+    }
+    .countdown-seconds{
+        color:#8dc63f !important;
+    }
+    @media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+        #countdown-timer > .countdown-section {
+            font-size: 10px;
+        }
+        #countdown-timer > .countdown-section > .countdown-period {
+            font-size: 10px;
+        }
+        body {
+            margin-top: 20px;
+        }
+    }
+    </style>
+    
+    <title>Document</title>
+</head>
+<body>
+    
+<div class="counter-class">
+    <div id="countdown-timer">
+        <div class="countdown-section"><span class="countdown-amount first-item countdown-days counter-days">620</span>
+            <span class="countdown-period">Days</span></div>
+        <div class="countdown-section"><span class="countdown-amount countdown-hours counter-hours">07</span> <span
+                class="countdown-period">Hours</span></div>
+        <div class="countdown-section"><span class="countdown-amount countdown-minutes counter-minutes">28</span> <span
+                class="countdown-period">Minutes</span></div>
+        <div class="countdown-section"><span class="countdown-amount countdown-seconds counter-seconds">37</span> <span
+                class="countdown-period">Seconds</span></div>
+    </div>
+</div>
+
+</body>
+</html>
